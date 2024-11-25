@@ -19,6 +19,7 @@ import {
 
 import VScouterLogoImage from "../media/VScouterLogo.png";
 import PowerBIImage from "../media/PowerBIImage.svg";
+import FRCFieldImage from "../media/FRCField.png";
 
 export default makeScene2D(function* (view) {
   var green = "B2F2BB";
@@ -28,12 +29,124 @@ export default makeScene2D(function* (view) {
   const background = createRef<Rect>();
   view.add(generateRect(1920, 1080, yellow, background, 0, 0, [], 0));
 
+  const presentationIntro = createRef<Layout>();
+  view.add(
+    <Layout ref={presentationIntro}>
+      {generateText("Vihaan Chhabria", 100, 0, -370.38, "black")}
+      {generateText("FRC Scouting With VScouter", 125, 0, -230, "black")}
+      <Img src={VScouterLogoImage} width={632.37} height={632.37} x={0} y={175} />
+    </Layout>
+  );
+
+  const FRCFieldRef = createRef<Img>();
+  const alliance1 = createRef<Rect>();
+  view.add(
+    <Img
+      src={FRCFieldImage}
+      ref={FRCFieldRef}
+      width={669 * 2.5}
+      height={296 * 2.5}
+      x={960+((669 * 2.5)/2)}
+    >
+      {[
+        [384, -230],
+        [135, -230],
+        [-148, -230],
+        [-431, -230],
+        [-431, 200],
+        [-148, 200],
+        [135, 200],
+        [384, 200],
+      ].map((coord, index) =>
+        index == 0
+          ? generateRect(
+              100,
+              100,
+              blue,
+              alliance1,
+              coord[0],
+              coord[1],
+              [generateText(String(index + 1), 40)],
+              20
+            )
+          : generateRect(
+              100,
+              100,
+              blue,
+              undefined,
+              coord[0],
+              coord[1],
+              [generateText(String(index + 1), 40)],
+              20
+            )
+      )}
+    </Img>
+  );
+
+  const notPickedTeams = createRef<Layout>();
+  const alliance1Pick = createRef<Rect>();
+  view.add(
+    <Layout ref={notPickedTeams} x={960+850}>
+      {[...Array(8)].map((_, index) =>
+        index == 0
+          ? generateRect(
+              80,
+              80,
+              green,
+              alliance1Pick,
+              0 - 115 * index,
+              440,
+              [],
+              20
+            )
+          : generateRect(80, 80, green, undefined, 0 - 115 * index, 440, [], 20)
+      )}
+      ,
+      {[...Array(8)].map((_, index) =>
+        generateRect(80, 80, green, undefined, 0 + 115 * index, 440, [], 20)
+      )}
+    </Layout>
+  );
+
+  const alliancePickTimer = createRef<Txt>();
+  view.add(
+    generateText("0:45", 75, -130, -452.65 - 150, "red", alliancePickTimer)
+  );
+
+  yield* beginSlide("Intro");
+  yield* all(
+    presentationIntro().y(1000, 1),
+    FRCFieldRef().x(0, 1),
+    notPickedTeams().x(0, 1),
+  )
+  presentationIntro().remove();
+
+  yield* beginSlide("Alliance Selection Changes");
+  yield* all(
+    alliance1().y(0, 1),
+    alliance1().x(0, 1),
+    alliancePickTimer().y(0, 1),
+    alliance1Pick().y(100, 1)
+  );
+
   const scoutingMessage = createRef<Rect>();
   view.add(
-    generateRect(1204.93, 407.5, green, scoutingMessage, 0, 0, [
+    generateRect(1204.93, 407.5, green, scoutingMessage, 0, -452.65 - 407.5, [
       generateText("Scouting!", 100),
     ])
   );
+
+  yield* beginSlide("Scouting Message");
+  yield* all(
+    FRCFieldRef().x(-960 - (669 * 2.5) / 2, 1),
+    notPickedTeams().x(-960 - 900, 1),
+    alliancePickTimer().x(-960 - 900, 1),
+    scoutingMessage().x(0, 1),
+    scoutingMessage().y(0, 1)
+  );
+  FRCFieldRef().remove();
+  notPickedTeams().remove();
+  alliancePickTimer().remove();
 
   const scoutingFlowChart = createRef<Rect>();
   view.add(
@@ -200,14 +313,6 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
-  yield* beginSlide("Parsing Flowchart P1");
-  yield* all(
-    dataCollectionDemo().y(654.07 + 377.76, 1),
-    leftParsingFlowChart().x(0, 1),
-    rightParsingFlowChart().x(0, 1)
-  );
-  dataCollectionDemo().remove();
-
   const centerParsingFlowChart = createRef<Rect>();
   view.add(
     generateRect(455, 420, blue, centerParsingFlowChart, 0, -541.46 - 420 / 2, [
@@ -215,12 +320,18 @@ export default makeScene2D(function* (view) {
     ])
   );
 
-  yield* beginSlide("Parsing Flowchart P2");
-  yield* all(centerParsingFlowChart().y(0, 1));
+  yield* beginSlide("Parsing Flowchart");
+  yield* all(
+    dataCollectionDemo().y(654.07 + 377.76, 1),
+    leftParsingFlowChart().x(0, 1),
+    rightParsingFlowChart().x(0, 1),
+    centerParsingFlowChart().y(0, 1)
+  );
+  dataCollectionDemo().remove();
 
   const typesOfTransfer = createRef<Layout>();
   view.add(
-    <Layout x={954.98+(1799.98/2)} ref={typesOfTransfer}>
+    <Layout x={954.98 + 1799.98 / 2} ref={typesOfTransfer}>
       {generateText("Ways To Transfer Data", 100, 0, -401.85)}
 
       {generateTypeOfTransfer(
@@ -276,41 +387,41 @@ export default makeScene2D(function* (view) {
   yield* beginSlide("Parsing Data Demo");
   yield* all(
     parseDataDemo().y(0, 1),
-    typesOfTransfer().x(-954.98-(1799.98/2), 1)
-  )
-  typesOfTransfer().remove()
+    typesOfTransfer().x(-954.98 - 1799.98 / 2, 1)
+  );
+  typesOfTransfer().remove();
 
   const analysisToPowerBI = createRef<Layout>();
   view.add(
-    <Layout ref={analysisToPowerBI} x={-959.58-(1568.5/2)}>
+    <Layout ref={analysisToPowerBI} x={-959.58 - 1568.5 / 2}>
       {generateRect(605.18, 301.1, blue, undefined, -447.08, 0, [
         generateText("Analysis", 75),
       ])}
       {generateArrow([
         [-139.49, 0],
-        [144.49, 0]
+        [144.49, 0],
       ])}
     </Layout>
-  )
+  );
 
   const powerBIImageRef = createRef<Img>();
   view.add(
     <Img
-        ref={powerBIImageRef}
-        src={PowerBIImage}
-        width={630}
-        height={630}
-        x={-960-(630/2)}
-        y={0}
-      />
-  )
+      ref={powerBIImageRef}
+      src={PowerBIImage}
+      width={630}
+      height={630}
+      x={-960 - 630 / 2}
+      y={0}
+    />
+  );
 
   yield* beginSlide("Analysis P1");
   yield* all(
     parseDataDemo().y(654.07 + 377.76, 1),
     powerBIImageRef().x(481.66, 1),
     analysisToPowerBI().x(0, 1)
-  )
+  );
   parseDataDemo().remove();
 
   const powerBIDescription = createRef<Rect>();
@@ -327,11 +438,11 @@ export default makeScene2D(function* (view) {
 
   yield* beginSlide("Analysis P2");
   yield* all(
-    analysisToPowerBI().x(-999.92-(894.17/2), 1),
+    analysisToPowerBI().x(-999.92 - 894.17 / 2, 1),
     powerBIImageRef().x(-447.5, 1),
     powerBIDescription().x(440.78, 1)
-  )
-  analysisToPowerBI().remove()
+  );
+  analysisToPowerBI().remove();
 
   const analysisDemo = createRef<Rect>();
   view.add(
@@ -342,10 +453,10 @@ export default makeScene2D(function* (view) {
 
   yield* beginSlide("Analysis Demo");
   yield* all(
-    powerBIImageRef().x(-960-(630/2), 1),
-    powerBIDescription().x(960+(872.5/2), 1),
+    powerBIImageRef().x(-960 - 630 / 2, 1),
+    powerBIDescription().x(960 + 872.5 / 2, 1),
     analysisDemo().y(0, 1)
-  )
+  );
   powerBIImageRef().remove();
   powerBIDescription().remove();
 
@@ -379,7 +490,14 @@ function generateRect(
   );
 }
 
-function generateText(text: string, fontSize: number, x?: number, y?: number) {
+function generateText(
+  text: string,
+  fontSize: number,
+  x?: number,
+  y?: number,
+  fill?: string,
+  ref?: Reference<Txt>
+) {
   return (
     <Txt
       x={x}
@@ -387,6 +505,8 @@ function generateText(text: string, fontSize: number, x?: number, y?: number) {
       fontSize={fontSize}
       fontFamily={"Bahnschrift"}
       text={text}
+      fill={fill !== undefined ? fill : "black"}
+      ref={ref}
     />
   );
 }
