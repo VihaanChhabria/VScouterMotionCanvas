@@ -34,7 +34,13 @@ export default makeScene2D(function* (view) {
     <Layout ref={presentationIntro}>
       {generateText("Vihaan Chhabria", 100, 0, -370.38, "black")}
       {generateText("FRC Scouting With VScouter", 125, 0, -230, "black")}
-      <Img src={VScouterLogoImage} width={632.37} height={632.37} x={0} y={175} />
+      <Img
+        src={VScouterLogoImage}
+        width={632.37}
+        height={632.37}
+        x={0}
+        y={175}
+      />
     </Layout>
   );
 
@@ -46,7 +52,7 @@ export default makeScene2D(function* (view) {
       ref={FRCFieldRef}
       width={669 * 2.5}
       height={296 * 2.5}
-      x={960+((669 * 2.5)/2)}
+      x={960 + (669 * 2.5) / 2}
     >
       {[
         [384, -230],
@@ -86,7 +92,7 @@ export default makeScene2D(function* (view) {
   const notPickedTeams = createRef<Layout>();
   const alliance1Pick = createRef<Rect>();
   view.add(
-    <Layout ref={notPickedTeams} x={960+850}>
+    <Layout ref={notPickedTeams} x={960 + 850}>
       {[...Array(8)].map((_, index) =>
         index == 0
           ? generateRect(
@@ -117,8 +123,8 @@ export default makeScene2D(function* (view) {
   yield* all(
     presentationIntro().y(1000, 1),
     FRCFieldRef().x(0, 1),
-    notPickedTeams().x(0, 1),
-  )
+    notPickedTeams().x(0, 1)
+  );
   presentationIntro().remove();
 
   yield* beginSlide("Alliance Selection Changes");
@@ -444,10 +450,11 @@ export default makeScene2D(function* (view) {
   );
   analysisToPowerBI().remove();
 
-  const analysisDemo = createRef<Rect>();
+  const analysisDemoBox = createRef<Rect>();
+  const analysisDemoText = createRef<Txt>();
   view.add(
-    generateRect(825, 377.76, blue, analysisDemo, 0, -654.07 - 377.76, [
-      generateText("Analysis Demo", 75),
+    generateRect(825, 377.76, blue, analysisDemoBox, 0, -654.07 - 377.76, [
+      generateText("Analysis Demo", 75, 0, 0, "black", analysisDemoText),
     ])
   );
 
@@ -455,12 +462,20 @@ export default makeScene2D(function* (view) {
   yield* all(
     powerBIImageRef().x(-960 - 630 / 2, 1),
     powerBIDescription().x(960 + 872.5 / 2, 1),
-    analysisDemo().y(0, 1)
+    analysisDemoBox().y(0, 1)
   );
   powerBIImageRef().remove();
   powerBIDescription().remove();
 
-  yield* beginSlide("-");
+  yield* beginSlide("Conclusion");
+  yield* all(
+    analysisDemoText().y(-1000, 1),
+    analysisDemoBox().width(1920, 1),
+    analysisDemoBox().height(1080, 1),
+    analysisDemoBox().radius(0, 1),
+    analysisDemoBox().lineWidth(0, 1)
+  )
+  analysisDemoText().remove();
 });
 
 function generateRect(
