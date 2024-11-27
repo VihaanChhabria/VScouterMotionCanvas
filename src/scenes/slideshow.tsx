@@ -10,42 +10,67 @@ import {
 import {
   all,
   beginSlide,
+  chain,
   createRef,
   PossibleVector2,
   Reference,
   SignalValue,
-  waitFor,
 } from "@motion-canvas/core";
 
 import VScouterLogoImage from "../media/VScouterLogo.png";
 import PowerBIImage from "../media/PowerBIImage.svg";
 import FRCFieldImage from "../media/FRCField.png";
 import VihaanLinkTreeImage from "../media/VihaanLinkTree.png";
+import FRCLogo from "../media/FRCLogo.png";
+import InternetIcon from "../media/InternetIcon.png";
+import WifiIcon from "../media/WifiIcon.png";
+import AutoCompletionImage from "../media/AutoCompletionImage.png";
+import FlashDriveImage from "../media/FlashDrive.png";
+
+import { getColors } from "../defaults";
 
 export default makeScene2D(function* (view) {
-  // var green = "B8336A";
-  // var yellow = "6893AC";
-  // var blue = "F3CA40";
-  var colorOne = "FFD6CC";
-  var colorBackground = "FFF3B0";
-  var colorTwo = "CFEAFF";
+  var colors = getColors();
+  var colorOne = colors[0]; //"FFD6CC";
+  var colorBackground = colors[1]; //"FFF3B0";
+  var colorTwo = colors[2]; //"CFEAFF";
 
   const background = createRef<Rect>();
   view.add(generateRect(1920, 1080, colorBackground, background, 0, 0, [], 0));
 
-  const presentationIntro = createRef<Layout>();
+  const presentationIntro = createRef<Txt>();
   view.add(
-    <Layout ref={presentationIntro}>
-      {generateText("Vihaan Chhabria", 100, 0, -370.38, "black")}
-      {generateText("FRC Scouting With VScouter", 125, 0, -230, "black")}
-      <Img
-        src={VScouterLogoImage}
-        width={632.37}
-        height={632.37}
-        x={0}
-        y={175}
-      />
-    </Layout>
+    generateText(
+      "Big News In FRC This Year!",
+      10,
+      0,
+      0,
+      undefined,
+      presentationIntro
+    )
+  );
+
+  yield* chain(
+    presentationIntro().fontSize(160, 0.5),
+    presentationIntro().fontSize(130, 0.25)
+  );
+
+  const FRCLogoRef = createRef<Img>();
+  view.add(
+    <Img
+      src={FRCLogo}
+      ref={FRCLogoRef}
+      width={900}
+      x={960 + 1250 / 2}
+      y={100}
+    />
+  );
+
+  yield* beginSlide("Whats FRC");
+  yield* all(
+    FRCLogoRef().x(0, 1),
+    presentationIntro().text("What is FRC?", 1),
+    presentationIntro().y(-375, 1)
   );
 
   const FRCFieldRef = createRef<Img>();
@@ -136,8 +161,10 @@ export default makeScene2D(function* (view) {
   yield* all(
     presentationIntro().y(1000, 1),
     FRCFieldRef().x(0, 1),
-    notPickedTeams().x(0, 1)
+    notPickedTeams().x(0, 1),
+    FRCLogoRef().x(-960 - 1250 / 2, 1)
   );
+  FRCLogoRef().remove();
   presentationIntro().remove();
 
   yield* beginSlide("Alliance Selection Changes");
@@ -174,23 +201,32 @@ export default makeScene2D(function* (view) {
   alliancePickTimer().remove();
 
   const scoutingFlowChart = createRef<Rect>();
+  const scoutingFlowChartDataCollection = createRef<Rect>();
+  const scoutingFlowChartParsing = createRef<Rect>();
+  const scoutingFlowChartAnalysis = createRef<Rect>();
   view.add(
     generateRect(1845.4, 600.14, colorOne, scoutingFlowChart, 0, 501 + 600.14, [
-      generateRect(527.07, 356.81, colorTwo, undefined, -613.62),
+      generateRect(
+        527.07,
+        356.81,
+        colorTwo,
+        scoutingFlowChartDataCollection,
+        -613.62
+      ),
       generateText("Data Collection", 40, -613.62, 0),
       generateArrow([
         [-613.62 + 527.07 / 2, 0],
         [0 - 527.07 / 2, 0],
       ]),
 
-      generateRect(527.07, 356.81, colorTwo, undefined, 0),
+      generateRect(527.07, 356.81, colorTwo, scoutingFlowChartParsing, 0),
       generateText("Parsing", 40, 0, 0),
       generateArrow([
         [0 + 527.07 / 2, 0],
         [613.62 - 527.07 / 2, 0],
       ]),
 
-      generateRect(527.07, 356.81, colorTwo, undefined, 613.62),
+      generateRect(527.07, 356.81, colorTwo, scoutingFlowChartAnalysis, 613.62),
       generateText("Analysis", 40, 613.62, 0),
       generateArrow([
         [613.62, 89.76 * 2],
@@ -212,6 +248,27 @@ export default makeScene2D(function* (view) {
     scoutingMessage().height(266.81, 1),
     scoutingMessage().y(-368.5, 1),
     scoutingFlowChart().y(129.86, 1)
+  );
+
+  yield* beginSlide("Scouting Flowchart Data Collection");
+  yield* all(
+    scoutingFlowChartDataCollection().lineWidth(25, 0.5),
+    scoutingFlowChartParsing().lineWidth(5, 0.5),
+    scoutingFlowChartAnalysis().lineWidth(5, 0.5)
+  );
+
+  yield* beginSlide("Scouting Flowchart Parsing");
+  yield* all(
+    scoutingFlowChartDataCollection().lineWidth(5, 0.5),
+    scoutingFlowChartParsing().lineWidth(25, 0.5),
+    scoutingFlowChartAnalysis().lineWidth(5, 0.5)
+  );
+
+  yield* beginSlide("Scouting Flowchart Analysis");
+  yield* all(
+    scoutingFlowChartDataCollection().lineWidth(5, 0.5),
+    scoutingFlowChartParsing().lineWidth(5, 0.5),
+    scoutingFlowChartAnalysis().lineWidth(25, 0.5)
   );
 
   const vscouterLogo = createRef<Img>();
@@ -246,35 +303,109 @@ export default makeScene2D(function* (view) {
     )
   );
 
-  const vscouterDescription = createRef<Rect>();
+  const vscouterDescriptionBox = createRef<Rect>();
+  const vscouterDescriptionText = createRef<Txt>();
   view.add(
     generateRect(
       872.5,
-      814.87,
+      173.04,
       colorTwo,
-      vscouterDescription,
+      vscouterDescriptionBox,
       960.77 + 440.78,
-      0,
+      -320.92,
       [
         generateText(
-          `- Data collection though a website found at \nhttps://vscouter.netlify.app/\n\n - Scouting can be done offline in \nenvironments with no internet\n\n- Auto completion to make selecting teams \nto scout easier\n\n- USB flash drive data collection process`,
+          `- Data collection though a website found at \nhttps://vscouter.netlify.app/`,
           43,
           0,
-          0
+          0,
+          undefined,
+          vscouterDescriptionText
         ),
       ]
     )
   );
 
-  yield* beginSlide("VScouter Explanation");
+  const vscouterDescriptionImageP1 = createRef<Img>();
+  const vscouterDescriptionImageP2 = createRef<Img>();
+  const vscouterDescriptionImageP3 = createRef<Img>();
+  const vscouterDescriptionImageP4 = createRef<Img>();
+  view.add(
+    <Layout>
+      <Img
+        ref={vscouterDescriptionImageP1}
+        src={InternetIcon}
+        width={578.67}
+        x={1920}
+        y={118.1}
+      />
+      <Img
+        ref={vscouterDescriptionImageP2}
+        src={WifiIcon}
+        width={641.84}
+        x={1920}
+        y={118.1}
+      />
+      <Img
+        ref={vscouterDescriptionImageP3}
+        src={AutoCompletionImage}
+        width={939.95}
+        x={1920}
+        y={118.1}
+      />
+      <Img
+        ref={vscouterDescriptionImageP4}
+        src={FlashDriveImage}
+        width={512}
+        x={1920}
+        y={118.1}
+      />
+    </Layout>
+  );
+
+  yield* beginSlide("VScouter Explanation P1");
   yield* all(
     scoutingMessage().x(-960.77 - 788.93, 1),
     vscouterLogoArrow().x(-960.77 - 788.93, 1),
     vscouterLogo().x(-447.44, 1),
-    vscouterDescription().x(440.78, 1)
+    vscouterDescriptionImageP1().x(476.25, 1),
+    vscouterDescriptionBox().x(476.25, 1)
   );
   vscouterLogoArrow().remove();
   scoutingMessage().remove();
+
+  yield* beginSlide("VScouter Explanation P2");
+  yield* all(
+    vscouterDescriptionImageP1().y(1080, 1),
+    vscouterDescriptionImageP2().x(476.25, 1),
+    vscouterDescriptionText().text(
+      "- Scouting can be done offline in \nenvironments with no internet",
+      1
+    )
+  );
+  vscouterDescriptionImageP1().remove();
+
+  yield* beginSlide("VScouter Explanation P3");
+  yield* all(
+    vscouterDescriptionImageP2().y(1080, 1),
+    vscouterDescriptionImageP3().x(476.25, 1),
+    vscouterDescriptionText().text(
+      "- Auto completion to make selecting teams \nto scout easier",
+      1
+    )
+  );
+  vscouterDescriptionImageP2().remove();
+
+  yield* beginSlide("VScouter Explanation P4");
+  yield* all(
+    vscouterDescriptionImageP3().y(1080, 1),
+    vscouterDescriptionImageP4().x(476.25, 1),
+    vscouterDescriptionText().text(
+      "- USB flash drive data collection process",
+      1
+    )
+  );
+  vscouterDescriptionImageP3().remove();
 
   const dataCollectionDemo = createRef<Rect>();
   view.add(
@@ -291,12 +422,14 @@ export default makeScene2D(function* (view) {
 
   yield* beginSlide("Data Collection Demo");
   yield* all(
+    vscouterDescriptionBox().y(1080, 1),
+    vscouterDescriptionImageP4().y(1080, 1),
     vscouterLogo().x(-959.23 - 814.87, 1),
-    vscouterDescription().x(960.77 + 440.78, 1),
     dataCollectionDemo().y(0, 1)
   );
+  vscouterDescriptionBox().remove();
+  vscouterDescriptionImageP4().remove();
   vscouterLogo().remove();
-  vscouterDescription().remove();
 
   const leftParsingFlowChart = createRef<Layout>();
   view.add(
@@ -375,6 +508,7 @@ export default makeScene2D(function* (view) {
   dataCollectionDemo().remove();
 
   const typesOfTransfer = createRef<Layout>();
+
   view.add(
     <Layout x={954.98 + 1799.98 / 2} ref={typesOfTransfer}>
       {generateText("Ways To Transfer Data", 100, 0, -401.85)}
@@ -516,7 +650,7 @@ export default makeScene2D(function* (view) {
 
   const conclusionPage = createRef<Layout>();
   view.add(
-    <Layout ref={conclusionPage} x={960+(1684.05/2)}>
+    <Layout ref={conclusionPage} x={960 + 1684.05 / 2}>
       {generateText("Thank You!", 150, -420, -325.18)}
       <Line
         stroke={"black"}
@@ -533,7 +667,13 @@ export default makeScene2D(function* (view) {
         [-420, -70],
         [-420, 50],
       ])}
-      <Img src={VihaanLinkTreeImage} width={433.17} height={433.17} x={-420} y={275}/>
+      <Img
+        src={VihaanLinkTreeImage}
+        width={433.17}
+        height={433.17}
+        x={-420}
+        y={275}
+      />
 
       <Img
         src={VScouterLogoImage}
