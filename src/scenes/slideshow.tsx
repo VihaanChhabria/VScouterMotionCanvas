@@ -15,6 +15,7 @@ import {
   PossibleVector2,
   Reference,
   SignalValue,
+  waitFor,
 } from "@motion-canvas/core";
 
 import VScouterLogoImage from "../media/VScouterLogo.png";
@@ -163,6 +164,7 @@ export default makeScene2D(function* (view) {
     generateText("0:45", 75, -130, -452.65 - 150, "red", alliancePickTimer)
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Intro");
   yield* all(
     presentationIntro().y(1000, 1),
@@ -173,6 +175,7 @@ export default makeScene2D(function* (view) {
   FRCLogoRef().remove();
   presentationIntro().remove();
 
+  yield* waitFor(1)
   yield* beginSlide("Alliance Selection Changes");
   yield* all(
     alliance1().y(0, 1),
@@ -194,6 +197,7 @@ export default makeScene2D(function* (view) {
     )
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Scouting Message");
   yield* all(
     FRCFieldRef().x(-960 - (669 * 2.5) / 2, 1),
@@ -248,6 +252,7 @@ export default makeScene2D(function* (view) {
     ])
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Scouting Flowchart");
   yield* all(
     scoutingMessage().width(788.93, 1),
@@ -256,6 +261,7 @@ export default makeScene2D(function* (view) {
     scoutingFlowChart().y(129.86, 1)
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Scouting Flowchart Data Collection");
   yield* all(
     scoutingFlowChartDataCollection().lineWidth(25, 0.5),
@@ -263,6 +269,7 @@ export default makeScene2D(function* (view) {
     scoutingFlowChartAnalysis().lineWidth(5, 0.5)
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Scouting Flowchart Parsing");
   yield* all(
     scoutingFlowChartDataCollection().lineWidth(5, 0.5),
@@ -270,6 +277,7 @@ export default makeScene2D(function* (view) {
     scoutingFlowChartAnalysis().lineWidth(5, 0.5)
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Scouting Flowchart Analysis");
   yield* all(
     scoutingFlowChartDataCollection().lineWidth(5, 0.5),
@@ -288,6 +296,7 @@ export default makeScene2D(function* (view) {
     />
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Scouting To VScouter");
   yield* all(
     scoutingFlowChart().y(1204.93, 1),
@@ -369,6 +378,7 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
+  yield* waitFor(1)
   yield* beginSlide("VScouter Explanation P1");
   yield* all(
     scoutingMessage().x(-960.77 - 788.93, 1),
@@ -380,6 +390,7 @@ export default makeScene2D(function* (view) {
   vscouterLogoArrow().remove();
   scoutingMessage().remove();
 
+  yield* waitFor(1)
   yield* beginSlide("VScouter Explanation P2");
   yield* all(
     vscouterDescriptionImageP1().y(1080, 1),
@@ -391,6 +402,7 @@ export default makeScene2D(function* (view) {
   );
   vscouterDescriptionImageP1().remove();
 
+  yield* waitFor(1)
   yield* beginSlide("VScouter Explanation P3");
   yield* all(
     vscouterDescriptionImageP2().y(1080, 1),
@@ -402,6 +414,7 @@ export default makeScene2D(function* (view) {
   );
   vscouterDescriptionImageP2().remove();
 
+  yield* waitFor(1)
   yield* beginSlide("VScouter Explanation P4");
   yield* all(
     vscouterDescriptionImageP3().y(1080, 1),
@@ -426,6 +439,7 @@ export default makeScene2D(function* (view) {
     )
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Data Collection Demo");
   yield* all(
     vscouterDescriptionBox().y(1080, 1),
@@ -504,6 +518,7 @@ export default makeScene2D(function* (view) {
     )
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Parsing Flowchart");
   yield* all(
     dataCollectionDemo().y(654.07 + 377.76, 1),
@@ -557,6 +572,7 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Ways To Transfer Data");
   yield* all(
     leftParsingFlowChart().y(540 + 800 / 2, 1),
@@ -597,6 +613,7 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Ways To Transfer Data Bluetooth P1");
   yield* all(
     flashDriveTransfer().x(1920, 1),
@@ -604,10 +621,12 @@ export default makeScene2D(function* (view) {
     wirelessIconRef().x(288.64, 1)
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Ways To Transfer Data Bluetooth P2");
   yield* all(wirelessIconRef().y(1080, 1), fileDiagram().x(288.64, 1));
   wirelessIconRef().remove();
 
+  yield* waitFor(1)
   yield* beginSlide("Ways To Transfer Data Bluetooth P3");
   yield* all(fileDiagram().y(1080, 1), appleDiagram().x(288.64, 1));
   fileDiagram().remove();
@@ -633,6 +652,7 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Ways To Transfer Data Flash Drives P1");
   yield* all(
     bluetoothTransfer().x(-1920, 1),
@@ -642,10 +662,12 @@ export default makeScene2D(function* (view) {
   );
   appleDiagram().remove();
 
+  yield* waitFor(1)
   yield* beginSlide("Ways To Transfer Data Flash Drives P2");
   yield* all(fileIconRef().y(1080, 1), notFileDiagram().x(288.64, 1));
   fileIconRef().remove();
 
+  yield* waitFor(1)
   yield* beginSlide("Ways To Transfer Data Flash Drives P3");
   yield* all(notFileDiagram().y(1080, 1), shieldIconRef().x(288.64, 1));
   notFileDiagram().remove();
@@ -666,6 +688,7 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Ways To Transfer Data QR Codes P1");
   yield* all(
     flashDriveTransfer().x(-1920, 1),
@@ -675,10 +698,12 @@ export default makeScene2D(function* (view) {
   );
   shieldIconRef().remove();
 
+  yield* waitFor(1)
   yield* beginSlide("Ways To Transfer Data QR Codes P2");
   yield* all(timeIconRef().y(1080, 1), fileDiagram2().x(288.64, 1));
   timeIconRef().remove();
 
+  yield* waitFor(1)
   yield* beginSlide("Ways To Transfer Data Conclusion");
   yield* all(
     fileDiagram2().y(1080, 1),
@@ -695,6 +720,7 @@ export default makeScene2D(function* (view) {
     ])
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Parsing Data Demo");
   yield* all(
     parseDataDemo().y(0, 1),
@@ -727,6 +753,7 @@ export default makeScene2D(function* (view) {
     />
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Analysis P1");
   yield* all(
     parseDataDemo().y(654.07 + 377.76, 1),
@@ -755,6 +782,7 @@ export default makeScene2D(function* (view) {
     )
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Analysis P2");
   yield* all(
     analysisToPowerBI().x(-999.92 - 894.17 / 2, 1),
@@ -771,6 +799,7 @@ export default makeScene2D(function* (view) {
     ])
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Analysis Demo");
   yield* all(
     powerBIImageRef().x(-960 - 630 / 2, 1),
@@ -817,6 +846,7 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
+  yield* waitFor(1)
   yield* beginSlide("Conclusion");
   yield* all(
     analysisDemoText().y(-1000, 1),
@@ -828,6 +858,7 @@ export default makeScene2D(function* (view) {
   );
   analysisDemoText().remove();
 
+  yield* waitFor(1)
   yield* beginSlide("-");
 });
 
