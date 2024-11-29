@@ -26,6 +26,12 @@ import InternetIcon from "../media/InternetIcon.png";
 import WifiIcon from "../media/WifiIcon.png";
 import AutoCompletionImage from "../media/AutoCompletionImage.png";
 import FlashDriveImage from "../media/FlashDrive.png";
+import WirelessIcon from "../media/WirelessIcon.png";
+import FileIcon from "../media/FileIcon.png";
+import AppleIcon from "../media/AppleLogo.png";
+import XIcon from "../media/RedX.png";
+import ShieldIcon from "../media/ShieldIcon.png";
+import TimeIcon from "../media/TimeIcon.png";
 
 import { getColors } from "../defaults";
 
@@ -508,7 +514,9 @@ export default makeScene2D(function* (view) {
   dataCollectionDemo().remove();
 
   const typesOfTransfer = createRef<Layout>();
-
+  const bluetoothTransfer = createRef<Rect>();
+  const flashDriveTransfer = createRef<Rect>();
+  const qrCodeTransfer = createRef<Rect>();
   view.add(
     <Layout x={954.98 + 1799.98 / 2} ref={typesOfTransfer}>
       {generateText("Ways To Transfer Data", 100, 0, -401.85)}
@@ -520,7 +528,9 @@ export default makeScene2D(function* (view) {
         colorOne,
         "Bluetooth",
         "- Offline Data Sharing\n- Contactless",
-        "- Small Max Bandwidth\n- Device Pairing Challenges\n- Compatibility Limitations"
+        "- Small Max Bandwidth\n- Device Pairing Challenges\n- Compatibility Limitations",
+        undefined,
+        bluetoothTransfer
       )}
       {generateTypeOfTransfer(
         0,
@@ -530,7 +540,8 @@ export default makeScene2D(function* (view) {
         "Flash Drives",
         "- Offline Data Sharing\n- Large Bandwidth\n- Reliable\n- Universally Compatible",
         "- Manual Process\n- Lack of Automation\n- No Real-Time Updates",
-        "green"
+        "green",
+        flashDriveTransfer
       )}
       {generateTypeOfTransfer(
         615,
@@ -540,7 +551,8 @@ export default makeScene2D(function* (view) {
         "QR Codes",
         "- Offline Data Sharing\n- Quick Data Sharing\n- Universally Compatible\n- Cost-Effective",
         "- Smaller Max Bandwidth\n- Manual Process\n- No Real-Time Updates\n- Possibility of Data Splits",
-        "yellow"
+        "yellow",
+        qrCodeTransfer
       )}
     </Layout>
   );
@@ -555,6 +567,126 @@ export default makeScene2D(function* (view) {
   leftParsingFlowChart().remove();
   rightParsingFlowChart().remove();
   centerParsingFlowChart().remove();
+
+  const wirelessIconRef = createRef<Img>();
+  const fileDiagram = createRef<Layout>();
+  const appleDiagram = createRef<Layout>();
+  view.add(
+    <Layout>
+      <Img
+        ref={wirelessIconRef}
+        src={WirelessIcon}
+        x={1920}
+        y={0}
+        width={579.17}
+        height={579.17}
+      />
+
+      <Layout ref={fileDiagram} x={1920}>
+        <Img src={FileIcon} width={320} />
+
+        <Img src={FileIcon} width={232} x={450} y={-260} />
+        <Img src={FileIcon} width={232} x={450} />
+        <Img src={FileIcon} width={232} x={450} y={260} />
+      </Layout>
+
+      <Layout ref={appleDiagram} x={1920}>
+        <Img src={AppleIcon} height={579.17} />
+        <Img src={XIcon} width={579.17} />
+      </Layout>
+    </Layout>
+  );
+
+  yield* beginSlide("Ways To Transfer Data Bluetooth P1");
+  yield* all(
+    flashDriveTransfer().x(1920, 1),
+    qrCodeTransfer().x(1920, 1),
+    wirelessIconRef().x(288.64, 1)
+  );
+
+  yield* beginSlide("Ways To Transfer Data Bluetooth P2");
+  yield* all(wirelessIconRef().y(1080, 1), fileDiagram().x(288.64, 1));
+  wirelessIconRef().remove();
+
+  yield* beginSlide("Ways To Transfer Data Bluetooth P3");
+  yield* all(fileDiagram().y(1080, 1), appleDiagram().x(288.64, 1));
+  fileDiagram().remove();
+
+  const fileIconRef = createRef<Img>();
+  const notFileDiagram = createRef<Layout>();
+  const shieldIconRef = createRef<Img>();
+  view.add(
+    <Layout>
+      <Img src={FileIcon} ref={fileIconRef} x={1920} />
+
+      <Layout ref={notFileDiagram} x={1920}>
+        <Img src={FileIcon} width={320} />
+
+        <Img src={FileIcon} width={232} x={450} y={-260} />
+        <Img src={FileIcon} width={232} x={450} />
+        <Img src={FileIcon} width={232} x={450} y={260} />
+
+        <Img src={XIcon} width={405.58} x={450} />
+      </Layout>
+
+      <Img src={ShieldIcon} width={512} ref={shieldIconRef} x={1920} />
+    </Layout>
+  );
+
+  yield* beginSlide("Ways To Transfer Data Flash Drives P1");
+  yield* all(
+    bluetoothTransfer().x(-1920, 1),
+    flashDriveTransfer().x(-615, 1),
+    appleDiagram().y(1080, 1),
+    fileIconRef().x(288.64, 1)
+  );
+  appleDiagram().remove();
+
+  yield* beginSlide("Ways To Transfer Data Flash Drives P2");
+  yield* all(fileIconRef().y(1080, 1), notFileDiagram().x(288.64, 1));
+  fileIconRef().remove();
+
+  yield* beginSlide("Ways To Transfer Data Flash Drives P3");
+  yield* all(notFileDiagram().y(1080, 1), shieldIconRef().x(288.64, 1));
+  notFileDiagram().remove();
+
+  const timeIconRef = createRef<Img>();
+  const fileDiagram2 = createRef<Layout>();
+  view.add(
+    <Layout>
+      <Img src={TimeIcon} ref={timeIconRef} x={1920} />
+
+      <Layout ref={fileDiagram2} x={1920}>
+        <Img src={FileIcon} width={320} />
+
+        <Img src={FileIcon} width={232} x={450} y={-260} />
+        <Img src={FileIcon} width={232} x={450} />
+        <Img src={FileIcon} width={232} x={450} y={260} />
+      </Layout>
+    </Layout>
+  );
+
+  yield* beginSlide("Ways To Transfer Data QR Codes P1");
+  yield* all(
+    flashDriveTransfer().x(-1920, 1),
+    qrCodeTransfer().x(-615, 1),
+    shieldIconRef().y(1080, 1),
+    timeIconRef().x(288.64, 1)
+  );
+  shieldIconRef().remove();
+
+  yield* beginSlide("Ways To Transfer Data QR Codes P2");
+  yield* all(timeIconRef().y(1080, 1), fileDiagram2().x(288.64, 1));
+  timeIconRef().remove();
+
+  yield* beginSlide("Ways To Transfer Data Conclusion");
+  yield* all(
+    fileDiagram2().y(1080, 1),
+    bluetoothTransfer().x(-615, 1),
+    flashDriveTransfer().x(0, 1),
+    qrCodeTransfer().x(615, 1),
+  );
+  fileDiagram2().remove();
 
   const parseDataDemo = createRef<Rect>();
   view.add(
@@ -764,10 +896,12 @@ function generateTypeOfTransfer(
   typeOfTransfer: string,
   pros: string,
   cons: string,
-  important?: string
+  important?: string,
+  ref?: Reference<Rect>
 ) {
   return (
     <Rect
+      ref={ref}
       width={530}
       height={685}
       x={x}
